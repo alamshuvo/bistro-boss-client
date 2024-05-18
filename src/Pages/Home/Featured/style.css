@@ -1,0 +1,5 @@
+.featured-item{
+    background-image: url('../../../../public/assets/home/featured.jpg');
+    background-position: fixed;
+    text-decoration: white;
+}
