@@ -18,6 +18,21 @@ const Nabbar = () => {
           Home
         </Link>
       </NavbarItem>
+      <NavbarItem className="text-white">
+        <Link color="warning" href="/login">
+          login
+        </Link>
+      </NavbarItem>
+      <NavbarItem className="text-white">
+        <Link color="warning" href="/menu">
+          Menu
+        </Link>
+      </NavbarItem>
+      <NavbarItem className="text-white">
+        <Link color="warning" href="/order/salad">
+          Order
+        </Link>
+      </NavbarItem>
       
     </>
   );
@@ -58,9 +73,9 @@ const Nabbar = () => {
 
         <NavbarMenu>
           {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item}-${index}`} >
               <Link
-                className="w-full"
+                className=" flex flex-col "
                 color={
                   index === 2
                     ? "warning"
