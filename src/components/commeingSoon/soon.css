@@ -1,0 +1,15 @@
+.a{
+    width: 100px;
+    height: 100px;
+  
+    position: relative;
+    animation: mymove 5s infinite;
+}
+@keyframes mymove {
+    0%    {right: 100px; left: 100px; }
+    25%  {right: 100px; left: 100px; }
+   
+    75%  {right: 100px; left: 100px; }
+    /* 100%  {right: 100px; left: 100px; } */
+    /* 100% {top: 0px; left: 0px; } */
+  }
