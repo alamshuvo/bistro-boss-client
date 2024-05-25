@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import app from "../../Firebase/Firebase.config";
 const auth=getAuth(app);
   export const AuthContext=createContext(null)
@@ -18,7 +18,7 @@ const createUser=(email,password)=>{
 
 const loginUser=(email,password)=>{
     setLoading(true);
-    signInWithEmailAndPassword(email,password)
+   return signInWithEmailAndPassword(auth,email,password)
 }
 
 
@@ -26,6 +26,21 @@ const loginUser=(email,password)=>{
 const logoutUser=()=>{
     setLoading(true);
     return signOut(auth)
+}
+
+
+// update profile 
+const updateUserProfile=(name,img)=>{
+    return  updateProfile(auth.currentUser, {
+        displayName: name, 
+        photoURL: img,
+      }).then(() => {
+        // Profile updated!
+        // ...
+      }).catch((error) => {
+        // An error occurred
+        // ...
+      });
 }
 
 useEffect(()=>{
@@ -47,7 +62,8 @@ useEffect(()=>{
         loading,
         createUser,
         loginUser,
-        logoutUser
+        logoutUser,
+        updateUserProfile
     }
 
 
