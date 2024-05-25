@@ -9,15 +9,22 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
+import { FaCartPlus } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../../components/Provider/AuthProvider";
+import UseCart from "../../../Hooks/UseCart";
 // import {AcmeLogo} from "./AcmeLogo.jsx";
 const Nabbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
+  const [carts]=UseCart()
   const handleLogOut = () => {
     logoutUser()
-    .then(res=>{console.log(res);})
-    .catch(error=>{console.log(error);})
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const nablink = (
     <>
@@ -40,6 +47,15 @@ const Nabbar = () => {
       <NavbarItem className="text-white">
         <Link color="warning" href="/secret">
           secret
+        </Link>
+      </NavbarItem>
+
+      <NavbarItem className="text-white">
+        <Link color="warning" href="/">
+          <button className="btn">
+          <FaCartPlus />
+            <div className="badge badge-secondary">+{carts?.length}</div>
+          </button>
         </Link>
       </NavbarItem>
     </>
