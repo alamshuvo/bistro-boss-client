@@ -3,10 +3,12 @@ import Helmeta from "../../components/Hemlmet/Helmet";
 import { useContext } from "react";
 import { AuthContext } from "../../components/Provider/AuthProvider";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
+import SocialLogin from "../../components/socialLogin/SocialLogin";
 
 const SignUp = () => {
-
+  const axiosPublic=UseAxiosPublic()
     const {createUser,updateUserProfile}=useContext(AuthContext);
     const navigate=useNavigate()
   const {
@@ -23,25 +25,43 @@ const SignUp = () => {
         const logdUser=res.user
         console.log(logdUser);
         updateUserProfile(logdUser.name,logdUser.photoURL)
-        Swal.fire({
-          title: "User created Successfully ",
-          showClass: {
-            popup: `
-              animate__animated
-              animate__fadeInUp
-              animate__faster
-            `
-          },
-          hideClass: {
-            popup: `
-              animate__animated
-              animate__fadeOutDown
-              animate__faster
-            `
+        .then(() => {
+          const userInfo={
+            name:data.name,
+            email:data.email
           }
+          axiosPublic.post("/users",userInfo)
+          .then(res=>{
+            if (res.data.insertedId) {
+              Swal.fire({
+                title: "User created Successfully ",
+                showClass: {
+                  popup: `
+                    animate__animated
+                    animate__fadeInUp
+                    animate__faster
+                  `
+                },
+                hideClass: {
+                  popup: `
+                    animate__animated
+                    animate__fadeOutDown
+                    animate__faster
+                  `
+                }
+              });
+              reset();
+              navigate("/")
+            }
+          })
+          // Profile updated!
+          // ...
+         
+        }).catch((error) => {
+          // An error occurred
+          // ...
         });
-        reset();
-        navigate("/")
+       
     })
   };
   console.log(watch("name"));
@@ -150,6 +170,15 @@ const SignUp = () => {
                   <input className="btn btn-primary" type="submit" value="signUp" />
                 </div>
               </form>
+             <div className="p-4">
+             <div>
+                  <SocialLogin></SocialLogin>
+                </div>
+                <div>
+                 <span>already have an account</span> <Link to={'/login'}>login here </Link>
+                </div>
+              
+             </div>
             </div>
           </div>
         </div>

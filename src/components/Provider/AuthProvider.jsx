@@ -1,12 +1,16 @@
 import { createContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from "../../Firebase/Firebase.config";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 const auth=getAuth(app);
-  export const AuthContext=createContext(null)
+  export const AuthContext=createContext(null);
+
 
 const AuthProvider = ({children}) => {
 const [user,setUser]=useState(null);
-const [loading,setLoading]=useState(true)
+const [loading,setLoading]=useState(true);
+const  googleProvider=new GoogleAuthProvider();
+const axiosPublic=UseAxiosPublic()
 // create user 
 const createUser=(email,password)=>{
     setLoading(true)
@@ -28,32 +32,48 @@ const logoutUser=()=>{
     return signOut(auth)
 }
 
+// goggle sign in 
+
+const gogleSignIn=()=>{
+    setLoading(true);
+    return signInWithPopup(auth,googleProvider)
+}
+
 
 // update profile 
 const updateUserProfile=(name,img)=>{
     return  updateProfile(auth.currentUser, {
         displayName: name, 
         photoURL: img,
-      }).then(() => {
-        // Profile updated!
-        // ...
-      }).catch((error) => {
-        // An error occurred
-        // ...
-      });
+      })
 }
 
 useEffect(()=>{
   const unsubscrive=  onAuthStateChanged(auth,curentUser=>{
         setUser(curentUser);
         console.log("curent user",curentUser);
+        const userInfo={
+            email:curentUser?.email
+        }
+        if (curentUser) {
+            axiosPublic.post("/jwt",userInfo)
+            .then(res=>{
+                if (res.data.token) {
+                    localStorage.setItem("access_token",res.data.token)
+                }
+            })
+        }
+        else{
+            // todo remove token if token store client side 
+            localStorage.removeItem("access_token")
+        }
         setLoading(false)
 
     });
     return ()=>{
         unsubscrive
     }
-},[])
+},[axiosPublic])
 
 
 
@@ -63,7 +83,8 @@ useEffect(()=>{
         createUser,
         loginUser,
         logoutUser,
-        updateUserProfile
+        updateUserProfile,
+        gogleSignIn
     }
 
 
