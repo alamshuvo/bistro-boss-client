@@ -51,7 +51,7 @@ const Nabbar = () => {
       </NavbarItem>
 
       <NavbarItem className="text-white">
-        <Link color="warning" href="/">
+        <Link color="warning" href="/dashboard/cart">
           <button className="btn">
           <FaCartPlus />
             <div className="badge badge-secondary">+{carts?.length}</div>

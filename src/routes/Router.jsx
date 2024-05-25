@@ -10,6 +10,8 @@ import Order from "../Pages/Order/Order";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoutes from "./PrivateRoutes";
 import Secret from "../Pages/Shared/secret/Secret";
+import Dashboard from "../MainLayout/Dashboard";
+import Cart from "../Pages/Dashboard/Dashboard/Cart/Cart";
 
   const router = createBrowserRouter([
     {
@@ -42,6 +44,16 @@ import Secret from "../Pages/Shared/secret/Secret";
        }
       ]
     },
+    {
+      path:"dashboard",
+      element:<Dashboard></Dashboard>,
+      children:[
+        {
+          path:"cart",
+          element:<Cart></Cart>
+        }
+      ]
+    }
   ]);
 
 export default router;
