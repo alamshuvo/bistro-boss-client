@@ -3,7 +3,7 @@ import UseAdmin from "../Hooks/UseAdmin";
 import UseAuth from "../Hooks/UseAuth";
 
 
-const AdminRoutes = (children) => {
+const AdminRoutes = ({children}) => {
     const {user,loading}=UseAuth()
     const [isAdmin,isAdminLoading]=UseAdmin()
    
